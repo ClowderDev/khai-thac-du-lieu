@@ -253,8 +253,8 @@ PotentialScore = 0.22·z(GiaTrungBinh)   + 0.18·z(MatDoChungCu)
 
 | Họ tên | MSSV | Vai trò |
 |--------|------|---------|
-| Nguyễn Văn Dương Hùng | 22520520 | Trưởng nhóm |
-| Trần Lê Vĩnh Bửu | 23520163 | Thành viên |
+| Trần Lê Vĩnh Bửu | 23520163  | Trưởng nhóm |
+| Phan Hải Đăng | 23520234 | Thành viên |
 | Nguyễn Ngọc Thông | 23521528 | Thành viên |
 
 **Giảng viên hướng dẫn:** Trần Văn Hải Triều
