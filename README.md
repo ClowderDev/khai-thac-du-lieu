@@ -257,7 +257,7 @@ PotentialScore = 0.22·z(GiaTrungBinh)   + 0.18·z(MatDoChungCu)
 | Phan Hải Đăng | 23520234 | Thành viên |
 | Nguyễn Ngọc Thông | 23521528 | Thành viên |
 
-**Giảng viên hướng dẫn:** Trần Văn Hải Triều
+**Giảng viên hướng dẫn:** Mai Xuân Hùng
 
 ---
 
