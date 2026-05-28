@@ -52,7 +52,7 @@ ptdlkd/
 │   ├── mo_ta_thu_duc_model_input_python.csv
 │   └── mo_ta_thu_duc_potential_python.csv
 │
-├── demo.py                     # Script demo terminal (dùng trình bày)
+├── DEMO.md                     # Kịch bản các bước demo cho giáo viên
 └── README.md
 ```
 
@@ -90,12 +90,19 @@ pip install pandas numpy geopandas shapely
 
 ## 🚀 Chạy Nhanh
 
+> [!TIP]
+> **Lưu ý trên máy thực hành:** Dùng đường dẫn Python cụ thể là `E:\Python\python.exe` để chạy các lệnh dưới đây thay vì lệnh `python` mặc định nếu máy báo lỗi thiếu thư viện.
+
 ### Bước 1 – Tạo dữ liệu phân tích
 
 Chạy toàn bộ pipeline xử lý và khai thác dữ liệu:
 
 ```bash
+# Lệnh chung
 python src/run_all.py
+
+# Trên máy thực hành
+E:\Python\python.exe src/run_all.py
 ```
 
 Pipeline thực hiện:
@@ -107,28 +114,35 @@ Pipeline thực hiện:
 6. Tính PotentialScore và xếp hạng 36 phường
 7. Xuất kết quả ra `webapp/data.json` và `webapp/thu_duc_wards.geojson`
 
-### Bước 2 – Mở Web App
+### Bước 2 – Khởi chạy Web App (Tránh lỗi CORS)
 
-Sau khi bước 1 hoàn thành, mở trình duyệt:
+Để xem đầy đủ giao diện bản đồ và biểu đồ (tránh lỗi bảo mật CORS khi trình duyệt tải dữ liệu JSON cục bộ), hãy dựng một máy chủ web cục bộ:
 
+**Cách 1: Chạy từ thư mục gốc của dự án**
 ```bash
-# Windows
-start webapp/index.html
+# Lệnh chung
+python -m http.server 8000
 
-# macOS
-open webapp/index.html
-
-# Linux
-xdg-open webapp/index.html
+# Trên máy thực hành
+E:\Python\python.exe -m http.server 8000
 ```
+Sau đó truy cập trình duyệt tại địa chỉ: **[http://localhost:8000/webapp/](http://localhost:8000/webapp/)**
 
-### Bước 3 – Chạy Demo Terminal (tùy chọn)
-
-Dùng để trình bày trực tiếp cho giáo viên:
-
+**Cách 2: Chạy trực tiếp từ bên trong thư mục `webapp`**
 ```bash
-python demo.py
+cd webapp
+
+# Lệnh chung
+python -m http.server 8000
+
+# Trên máy thực hành
+E:\Python\python.exe -m http.server 8000
 ```
+Sau đó truy cập trình duyệt tại địa chỉ: **[http://localhost:8000/](http://localhost:8000/)**
+
+### Bước 3 – Xem Kịch Bản Demo (tùy chọn)
+
+Đọc file [DEMO.md](file:///e:/Downloads/ptdlkd/DEMO.md) để xem kịch bản từng bước trình bày trực tiếp cho giáo viên (gồm các câu hỏi lý thuyết thường gặp và hướng dẫn các thao tác tương tác trên Web App).
 
 ---
 
@@ -250,3 +264,6 @@ PotentialScore = 0.22·z(GiaTrungBinh)   + 0.18·z(MatDoChungCu)
 ## 📄 License
 
 MIT License – Chỉ dùng cho mục đích học thuật.
+
+E:\Python\python.exe src/run_all.py
+E:\Python\python.exe -m http.server 8000

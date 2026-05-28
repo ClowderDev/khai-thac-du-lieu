@@ -10,17 +10,18 @@
 > Thực hiện các bước này **trước khi gặp giáo viên**.
 
 ```bash
-# 1. Clone project về máy (hoặc mở thư mục project)
+# 1. Mở thư mục project
 cd ptdlkd
 
-# 2. Cài thư viện (nếu chưa cài)
-pip install pandas numpy geopandas shapely
+# 2. Chạy toàn bộ pipeline để sinh data.json (Dùng Python phù hợp, ví dụ E:\Python\python.exe nếu là máy thực hành)
+E:\Python\python.exe src/run_all.py
+# (Hoặc python src/run_all.py trên máy cá nhân đã cài thư viện)
 
-# 3. Chạy toàn bộ pipeline để sinh data.json
-python src/run_all.py
+# 3. Dựng server cục bộ để chạy Web App (tránh lỗi bảo mật CORS khi fetch data.json)
+E:\Python\python.exe -m http.server 8000
+# (Hoặc python -m http.server 8000)
 
-# 4. Mở sẵn trình duyệt với file webapp/index.html
-start webapp/index.html
+# 4. Mở trình duyệt truy cập: http://localhost:8000/webapp/
 ```
 
 Kết quả mong đợi sau khi chạy `run_all.py`:
@@ -41,6 +42,10 @@ ALL DATA MINING PROCESSES COMPLETED SUCCESSFULLY!
 **Mở Terminal, chạy lại pipeline để giáo viên thấy output trực tiếp:**
 
 ```bash
+# Trên máy thực hành
+E:\Python\python.exe src/run_all.py
+
+# Trên máy cá nhân
 python src/run_all.py
 ```
 
@@ -53,7 +58,7 @@ Chỉ vào từng dòng output và giải thích:
 
 ## 🌐 Slide 1 — Mở Web App & Tab Dashboard (2 phút)
 
-**Thao tác:** Mở `webapp/index.html` trên trình duyệt (đã mở sẵn).
+**Thao tác:** Truy cập **[http://localhost:8000/webapp/](http://localhost:8000/webapp/)** trên trình duyệt (đã mở sẵn).
 
 ### Tab 1: Dashboard
 - Chỉ vào **các thẻ thống kê** ở đầu trang:
