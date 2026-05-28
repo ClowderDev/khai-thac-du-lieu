@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khai Thác Dữ Liệu Chung Cư Thủ Đức</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Leaflet.js CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <i class="fa-solid fa-cubes brand-icon"></i>
+                <div class="brand-text">
+                    <h1>DATAMINING</h1>
+                    <span>TP. THỦ ĐỨC</span>
+                </div>
+            </div>
+            
+            <nav class="nav-menu">
+                <button class="nav-item active" onclick="switchTab('overview-tab', this)" id="nav-overview">
+                    <i class="fa-solid fa-chart-line"></i> <span>Tổng quan</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('preprocessing-tab', this)" id="nav-preprocessing">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> <span>Tiền xử lý</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('apriori-tab', this)" id="nav-apriori">
+                    <i class="fa-solid fa-diagram-project"></i> <span>Luật kết hợp</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('roughset-tab', this)" id="nav-roughset">
+                    <i class="fa-solid fa-table-cells-large"></i> <span>Tập thô</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('classification-tab', this)" id="nav-classification">
+                    <i class="fa-solid fa-network-wired"></i> <span>Phân lớp</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('clustering-tab', this)" id="nav-clustering">
+                    <i class="fa-solid fa-circle-nodes"></i> <span>Gom cụm</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('results-tab', this)" id="nav-results">
+                    <i class="fa-solid fa-ranking-star"></i> <span>Độ tiềm năng</span>
+                </button>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="avatar"><i class="fa-solid fa-graduation-cap"></i></div>
+                    <div>
+                        <h4>Đồ án KTDL</h4>
+                        <p>Nhóm 7 - IS252</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Dashboard Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="content-header">
+                <div class="header-title">
+                    <h2 id="current-tab-title">Tổng quan dự án</h2>
+                    <p id="current-tab-subtitle">Phân tích phân bố căn hộ, ranh giới hành chính và hạ tầng giao thông, y tế, giáo dục.</p>
+                </div>
+                <div class="header-actions">
+                    <div class="time-badge">
+                        <i class="fa-regular fa-clock"></i> <span id="current-time">23:14 - 27/05/2026</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Tab Contents -->
+            <div class="tab-viewport">
+                
+                <!-- TAB 1: OVERVIEW -->
+                <section id="overview-tab" class="tab-content active">
+                    <div class="grid-layout cols-3">
+                        <div class="card stat-card glow-blue">
+                            <div class="stat-icon"><i class="fa-solid fa-building"></i></div>
+                            <div class="stat-info">
+                                <h3>151</h3>
+                                <p>Căn hộ chung cư</p>
+                            </div>
+                        </div>
+                        <div class="card stat-card glow-emerald">
+                            <div class="stat-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                            <div class="stat-info">
+                                <h3>36</h3>
+                                <p>Phường hành chính</p>
+                            </div>
+                        </div>
+                        <div class="card stat-card glow-amber">
+                            <div class="stat-icon"><i class="fa-solid fa-hospital"></i></div>
+                            <div class="stat-info">
+                                <h3>67</h3>
+                                <p>Tiện ích POI chính</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-layout cols-2-3 mt-4">
+                        <div class="card flex-col">
+                            <h3 class="card-title"><i class="fa-solid fa-earth-asia icon-spacing"></i> Bản đồ phân bố chung cư & POI</h3>
+                            <div id="map-overview" class="map-container"></div>
+                        </div>
+                        <div class="card flex-col">
+                            <h3 class="card-title"><i class="fa-solid fa-chart-pie icon-spacing"></i> Cơ cấu căn hộ theo Quận (cũ)</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-district-dist"></canvas>
+                            </div>
+                            <h3 class="card-title mt-4"><i class="fa-solid fa-chart-bar icon-spacing"></i> Thống kê số lượng chung cư theo phường</h3>
+                            <div class="chart-wrapper">
+                                <canvas id="chart-wards-dist"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: PREPROCESSING -->
+                <section id="preprocessing-tab" class="tab-content">
+                    <div class="card mb-4">
+                        <h3 class="card-title"><i class="fa-solid fa-gear icon-spacing"></i> Quy trình tiền xử lý & Rời rạc hoá dữ liệu</h3>
+                        <p class="description">Để áp dụng các thuật toán như Apriori, Rough Set, ID3 Decision Tree, dữ liệu cần được làm sạch và rời rạc hóa. Dưới đây là quy tắc rời rạc hoá:</p>
+                        <div class="grid-layout cols-3 mt-4">
+                            <div class="info-box">
+                                <h4>Phân khúc giá (price_segment)</h4>
+                                <ul>
+                                    <li><strong>Thấp:</strong> &lt; 50 triệu/m²</li>
+                                    <li><strong>Trung bình:</strong> 50 - 80 triệu/m²</li>
+                                    <li><strong>Cao:</strong> 80 - 150 triệu/m²</li>
+                                    <li><strong>Rất cao:</strong> &ge; 150 triệu/m²</li>
+                                </ul>
+                            </div>
+                            <div class="info-box">
+                                <h4>Khoảng cách POI (m)</h4>
+                                <ul>
+                                    <li><strong>Gần:</strong> &lt; 1500 mét</li>
+                                    <li><strong>Xa:</strong> &ge; 1500 mét</li>
+                                    <li>Áp dụng cho: Trạm Metro, Bệnh viện, Trung tâm thương mại, Trường Đại học</li>
+                                </ul>
+                            </div>
+                            <div class="info-box">
+                                <h4>Thuộc tính hành chính</h4>
+                                <ul>
+                                    <li><strong>Quận:</strong> Quận 2, Quận 9, Thủ Đức</li>
+                                    <li>Phục vụ các kỹ thuật khai phá luật không gian và rút gọn tập thô</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="flex-row justify-between align-center mb-4">
+                            <h3 class="card-title"><i class="fa-solid fa-table icon-spacing"></i> Dữ liệu chung cư sau khi rời rạc hóa</h3>
+                            <div class="search-box">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                                <input type="text" id="ap-search" placeholder="Tìm kiếm căn hộ..." onkeyup="filterApartmentTable()">
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table id="apartment-table">
+                                <thead>
+                                    <tr>
+                                        <th>Tên chung cư</th>
+                                        <th>Giá (Tr/m²)</th>
+                                        <th>Phân khúc</th>
+                                        <th>Quận</th>
+                                        <th>Phường</th>
+                                        <th>Ga Metro</th>
+                                        <th>Bệnh viện</th>
+                                        <th>TT Thương mại</th>
+                                        <th>Trường Đại học</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic rows loaded by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 3: ASSOCIATION RULES (APRIORI) -->
+                <section id="apriori-tab" class="tab-content">
+                    <div class="grid-layout cols-1-3">
+                        <div class="card flex-col height-fit">
+                            <h3 class="card-title"><i class="fa-solid fa-sliders icon-spacing"></i> Cấu hình tham số</h3>
+                            <div class="form-group mt-3">
+                                <label for="minsupp-range">Min Support: <span id="minsupp-val">0.15</span></label>
+                                <input type="range" id="minsupp-range" min="0.05" max="0.5" step="0.01" value="0.15" oninput="updateRangeLabel('minsupp', this.value)">
+                            </div>
+                            <div class="form-group mt-3">
+                                <label for="minconf-range">Min Confidence: <span id="minconf-val">0.60</span></label>
+                                <input type="range" id="minconf-range" min="0.4" max="0.95" step="0.05" value="0.60" oninput="updateRangeLabel('minconf', this.value)">
+                            </div>
+                            <button id="run-apriori-btn" class="btn btn-primary mt-4" onclick="triggerAprioriJS()">
+                                <i class="fa-solid fa-play"></i> Chạy Apriori (Live JS)
+                            </button>
+                        </div>
+                        <div class="card flex-col">
+                            <h3 class="card-title"><i class="fa-solid fa-lightbulb icon-spacing"></i> Các luật kết hợp khai phá được</h3>
+                            <div class="table-container mt-4">
+                                <table id="rules-table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Vế trái (Antecedent)</th>
+                                            <th>Vế phải (Consequent)</th>
+                                            <th>Độ phổ biến (Support)</th>
+                                            <th>Độ tin cậy (Confidence)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dynamic rules -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 4: ROUGH SET -->
+                <section id="roughset-tab" class="tab-content">
+                    <div class="grid-layout cols-1-3">
+                        <div class="card flex-col height-fit">
+                            <h3 class="card-title"><i class="fa-solid fa-circle-info icon-spacing"></i> Thông số Rough Set</h3>
+                            <div class="metric-box mt-4">
+                                <span class="metric-label">Độ phụ thuộc thuộc tính (gamma)</span>
+                                <h2 class="metric-value text-blue" id="rs-gamma">0.060</h2>
+                            </div>
+                            <div class="info-box mt-4">
+                                <p><strong>Lý thuyết tập thô:</strong> Đánh giá mức độ đóng góp của các thuộc tính điều kiện (Vị trí, Khoảng cách tiện ích) để xác định Phân khúc giá của chung cư. Chỉ số Gamma = 0.060 cho thấy mức độ mâu thuẫn lớn của dữ liệu không gian thực tế (nhiều căn hộ có cùng hạ tầng tiện ích nhưng phân khúc giá khác nhau).</p>
+                            </div>
+                        </div>
+                        <div class="card flex-col">
+                            <h3 class="card-title"><i class="fa-solid fa-scissors icon-spacing"></i> Danh sách Rút gọn thuộc tính (Reducts)</h3>
+                            <div class="reduct-list mt-4" id="rs-reducts-container">
+                                <!-- Dynamic reduct badges -->
+                            </div>
+                            
+                            <h3 class="card-title mt-6"><i class="fa-solid fa-expand icon-spacing"></i> Xấp xỉ tập phân khúc giá (Approximations)</h3>
+                            <div class="table-container mt-4">
+                                <table id="approximations-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Phân khúc giá</th>
+                                            <th>Xấp xỉ dưới (Lower)</th>
+                                            <th>Xấp xỉ trên (Upper)</th>
+                                            <th>Vùng biên (Boundary)</th>
+                                            <th>Độ chính xác (Accuracy)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dynamic rows -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 5: CLASSIFICATION -->
+                <section id="classification-tab" class="tab-content">
+                    <div class="grid-layout cols-2 mb-4">
+                        <div class="card">
+                            <h3 class="card-title"><i class="fa-solid fa-tree icon-spacing"></i> Cây quyết định ID3</h3>
+                            <div class="tree-container mt-4" id="id3-tree-view">
+                                <!-- Rendered interactive tree -->
+                            </div>
+                        </div>
+                        <div class="card flex-col">
+                            <h3 class="card-title"><i class="fa-solid fa-gauge-high icon-spacing"></i> So sánh độ chính xác</h3>
+                            <div class="grid-layout cols-2 mt-4">
+                                <div class="metric-card">
+                                    <h4>Decision Tree ID3</h4>
+                                    <div class="flex-row justify-around mt-2">
+                                        <div>
+                                            <span class="label">Train Acc</span>
+                                            <p class="val text-blue" id="dt-train-acc">0.0%</p>
+                                        </div>
+                                        <div>
+                                            <span class="label">Test Acc</span>
+                                            <p class="val text-blue" id="dt-test-acc">0.0%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="metric-card">
+                                    <h4>Naïve Bayes</h4>
+                                    <div class="flex-row justify-around mt-2">
+                                        <div>
+                                            <span class="label">Train Acc</span>
+                                            <p class="val text-emerald" id="nb-train-acc">0.0%</p>
+                                        </div>
+                                        <div>
+                                            <span class="label">Test Acc</span>
+                                            <p class="val text-emerald" id="nb-test-acc">0.0%</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h3 class="card-title mt-6"><i class="fa-solid fa-circle-question icon-spacing"></i> Dự đoán phân khúc giá trực tuyến</h3>
+                            <div class="predict-form mt-4">
+                                <div class="grid-layout cols-2">
+                                    <div class="form-group">
+                                        <label>Khu vực Quận (cũ):</label>
+                                        <select id="pred-district">
+                                            <option value="Quận 2">Quận 2</option>
+                                            <option value="Quận 9">Quận 9</option>
+                                            <option value="Thủ Đức">Thủ Đức</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Khoảng cách đến Ga Metro:</label>
+                                        <select id="pred-metro">
+                                            <option value="Gần">Gần (&lt; 1500m)</option>
+                                            <option value="Xa">Xa (&ge; 1500m)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Khoảng cách đến Bệnh viện:</label>
+                                        <select id="pred-hospital">
+                                            <option value="Gần">Gần (&lt; 1500m)</option>
+                                            <option value="Xa">Xa (&ge; 1500m)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Khoảng cách đến TTTM:</label>
+                                        <select id="pred-mall">
+                                            <option value="Gần">Gần (&lt; 1500m)</option>
+                                            <option value="Xa">Xa (&ge; 1500m)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Khoảng cách đến trường Đại học:</label>
+                                        <select id="pred-university">
+                                            <option value="Gần">Gần (&lt; 1500m)</option>
+                                            <option value="Xa">Xa (&ge; 1500m)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button class="btn btn-emerald mt-4 w-100" onclick="runPredictiveAnalysis()">Dự báo ngay</button>
+                                
+                                <div class="prediction-results mt-4" style="display:none;" id="pred-result-box">
+                                    <div class="grid-layout cols-2">
+                                        <div class="pred-res-card">
+                                            <span>Kết quả ID3:</span>
+                                            <h4 id="res-id3">-</h4>
+                                        </div>
+                                        <div class="pred-res-card">
+                                            <span>Kết quả Naïve Bayes:</span>
+                                            <h4 id="res-nb">-</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 6: CLUSTERING -->
+                <section id="clustering-tab" class="tab-content">
+                    <div class="grid-layout cols-2 mb-4">
+                        <div class="card flex-col">
+                            <h3 class="card-title"><i class="fa-solid fa-object-group icon-spacing"></i> Kết quả gom cụm K-Means (K=3)</h3>
+                            <div class="wcss-box mt-2">
+                                <span>Within-Cluster Sum of Squares (WCSS): </span><strong id="km-wcss">0.000</strong>
+                            </div>
+                            <div class="centroids-container mt-4" id="km-centroids-list">
+                                <!-- Centroid profile info -->
+                            </div>
+                        </div>
+                        <div class="card flex-col">
+                            <h3 class="card-title"><i class="fa-solid fa-border-all icon-spacing"></i> Mạng Kohonen SOM (10x10 Grid Map)</h3>
+                            <div class="som-grid mt-4" id="som-grid-container">
+                                <!-- 100 neurons rendered visually -->
+                            </div>
+                            <div class="som-detail-box mt-4" id="som-cell-detail" style="display:none;">
+                                <h4>Chi tiết cụm nơ-ron: <span id="som-cell-coord"></span></h4>
+                                <div id="som-cell-wards" class="mt-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 7: POTENTIAL SCORE & RESULTS -->
+                <section id="results-tab" class="tab-content">
+                    <div class="grid-layout cols-2-3">
+                        <div class="card flex-col">
+                            <h3 class="card-title"><i class="fa-solid fa-map icon-spacing"></i> Bản đồ độ tiềm năng phát triển chung cư (PotentialScore)</h3>
+                            <div id="map-potential" class="map-container mt-4"></div>
+                        </div>
+                        <div class="card flex-col">
+                            <h3 class="card-title"><i class="fa-solid fa-list-ol icon-spacing"></i> Xếp hạng tiềm năng 36 Phường của TP. Thủ Đức</h3>
+                            <div class="table-container mt-4">
+                                <table id="potential-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Hạng</th>
+                                            <th>Phường</th>
+                                            <th>Quận</th>
+                                            <th>Diện tích (km²)</th>
+                                            <th>Số chung cư</th>
+                                            <th>Độ tiềm năng (Score)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Dynamic ranking list -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Leaflet.js JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Chart.js JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom JS -->
+    <script src="app.js"></script>
+</body>
+</html>

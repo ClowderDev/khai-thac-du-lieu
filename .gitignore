@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+dist/
+build/
+.env
+.venv
+venv/
+env/
+
+# PDF source files (large, not needed for code review)
+*.pdf
+
+# Word docs
+*.docx
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Extracted PDF text (intermediate)
+pdf_texts/
+
+# R scripts (previous subject, kept locally only)
+Output/
+*.R
+*.Rmd
+*.Rproj
+*.RData
+*.Rhistory
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
